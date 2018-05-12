@@ -25,22 +25,25 @@ void loop()
   Serial.print("Temperature (Celsius): ");
   Serial.println(DHT.temperature);
   int temp = DHT.temperature;
-  if(temp > 26.00){ //temperature is above 26C
+  if(temp > 27.00){ //turn off if temperature is above 27C
     digitalWrite(led1, HIGH);
     digitalWrite(led2, HIGH);
     digitalWrite(led3, HIGH);
-    analogWrite(fetPin, pinDown);
+    //max for fetPin is 255, we want to lower the heat outputbut not turn it off
+    analogWrite(fetPin, 70);
     delay(2000);
   }
 
-  else if(temp < 20.00){ //what if the room is really cold?
+  else if(temp < 20.00){ //room temperature is usually 21C to 23C, 
+                         //anything lower than that, 
+                         //the pillow heating should go on idle
     digitalWrite(led1, HIGH);
     digitalWrite(led2, LOW);
     digitalWrite(led3, LOW);
-    analogWrite(fetPin, pinUp);
+    analogWrite(fetPin, pinDown);
     delay(2000);
   } 
-  else{ //stay on regardless
+  else{ //turn on when the temperature reads anything higher than 20C
     digitalWrite(led1, HIGH);
     digitalWrite(led2, HIGH);
     digitalWrite(led3, LOW);
